@@ -1,0 +1,24 @@
+# this is a comment$
+# all the required rules and symbols, along with the bonus ones, will be
+# shown here. spacing is not important
+
+
+A + B => P # Simple +
+A | B => O # Simple |
+A + !B => I # Simple !
+A ^ I => C # Simple ^
+
+A + B + P => M # Multiple +
+A | B | P => U # Multiple |
+A ^ B ^ P => L # Multiple ^
+
+(A + B) | (M ^ U) => E # Tout les operateur et parenthese
+A + B => X + D # Query a droite
+
+A + B => !R # ! a droite
+
+J <=> C # Double implication simple
+D + A <=> N + Y # Double implication complexe
+=AB
+
+?POICMULEXDANYRJ

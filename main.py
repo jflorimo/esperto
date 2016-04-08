@@ -18,6 +18,11 @@ def read( filePath ):
 
 	for line in fd:
 		result.append( line )
+		print line
 
+if ( len( sys.argv ) < 2 ):
+	print ( "Usage : " + sys.argv[0] + " [Input file]" )
+	exit( -1 )
 
+read(sys.argv[1])
 
