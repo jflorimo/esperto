@@ -1,7 +1,7 @@
 # @Author: jflorimo
 # @Date:   2016-04-10 12:42:02
 # @Last Modified by:   jflorimo
-# @Last Modified time: 2016-04-10 19:14:12
+# @Last Modified time: 2016-04-11 19:29:22
 
 class Fact( object ):
 
@@ -30,3 +30,10 @@ class Fact( object ):
 	#METHODS
 	def display( self ):
 		print "["+self.name+ ":" + str( self.value ) + "]"
+		# for rule in self.rules:
+		# 	rule.display()
+
+	def searchValue( self, factsMap ):
+		if len(self.rules) > 0:
+			print len(self.rules)
+

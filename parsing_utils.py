@@ -27,11 +27,10 @@ def setFactData(facts, rule, comparator, answer):
 	setFactAnswer(facts, rule, answer)
 
 def setFactAnswer(facts, rule, answer):
-		for char in rule:
+		for char in answer:
 			if isVar(char):
 				tmp = Rule(rule, answer)
-				tmp.display()
-				facts[char].addRule(rule)
+				facts[char].addRule(tmp)
 
 
 # def setVarsSolution(vars, solutionQuery, resultQuery, boolean):

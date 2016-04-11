@@ -14,8 +14,8 @@ def debug( ):
 	print "####Facts:####"
 	for fact in sorted(facts):
 		facts[fact].display()
-		for tt in facts[fact].getRules():
-			print tt
+		for rule in facts[fact].getRules():
+			rule.display()
 	print "####Rules:####"
 	for query in rules:
 		print(query)
@@ -49,3 +49,6 @@ read(sys.argv[1])
 init_factsValue(facts, input)
 init_factsRules(facts, rules)
 debug()
+
+for res in output:
+	print res + " -> " + str( facts[res].searchValue( facts ) )
