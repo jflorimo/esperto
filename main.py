@@ -14,6 +14,8 @@ def debug( ):
 	print "####Facts:####"
 	for fact in sorted(facts):
 		facts[fact].display()
+		for tt in facts[fact].getRules():
+			print tt
 	print "####Rules:####"
 	for query in rules:
 		print(query)

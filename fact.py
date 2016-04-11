@@ -24,6 +24,9 @@ class Fact( object ):
 	def getName( self ):
 		return ( self.name )
 
+	def getRules( self ):
+		return ( self.rules )
+
 	#METHODS
 	def display( self ):
 		print "["+self.name+ ":" + str( self.value ) + "]"
