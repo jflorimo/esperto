@@ -1,23 +1,30 @@
 #!/usr/bin/python
 import	sys
 from parsing import parseLine
-from fact import Fact
+from parsing_utils import init_factsValue
+from parsing_utils import init_factsRules
 
 facts = {}
-rules = {}
+rules = []
 input = []
 output = []
-queries = []
+
 
 def debug( ):
 	print "####Facts:####"
 	for fact in sorted(facts):
 		facts[fact].display()
 	print "####Rules:####"
+	for query in rules:
+		print(query)
+	print("######Input:######")
+	print(input)
+	print("######OutPut:######")
+	print(output)
 
 def parse( lines ):
 	for tmp in lines:
-		parseLine(tmp, facts, input, output, queries)
+		parseLine(tmp, facts, input, output, rules)
 
 def read( filePath ):
 	result = []
@@ -37,5 +44,6 @@ if ( len( sys.argv ) < 2 ):
 	exit( -1 )
 
 read(sys.argv[1])
-
+init_factsValue(facts, input)
+init_factsRules(facts, rules)
 debug()

@@ -8,7 +8,7 @@ autorizedVars = list(string.ascii_uppercase)
 authorizedSpecialChars = "+|^()=<>!? 	\n"
 authorizedChars = authorizedSpecialChars +''.join(autorizedVars)
 
-def getQueryRegex():
+def getRuleRegex():
 	return "^([(]?([!]?[A-Z])[)]?([+^|][(]?([!]?[A-Z])[)]?)*)(=>|<=>)([(]?([!]?[A-Z])[)]?([+^|][(]?([!]?[A-Z])[)]?)*)$"
 
 def isVar(letter):
@@ -29,7 +29,7 @@ def fillVar(facts, letter):
 			facts[letter] = Fact(letter)
 
 def checkLine(line, input, output, queries):
-	regexQuery = getQueryRegex()
+	regexQuery = getRuleRegex()
 	regexInput = "^([=][]A-Z]{1,})$"
 	regexOutput = "^([?][]A-Z]{1,})$"
 
