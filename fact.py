@@ -1,7 +1,7 @@
 # @Author: jflorimo
 # @Date:   2016-04-10 12:42:02
 # @Last Modified by:   jflorimo
-# @Last Modified time: 2016-04-11 19:29:22
+# @Last Modified time: 2016-04-11 20:16:25
 
 class Fact( object ):
 
@@ -35,5 +35,8 @@ class Fact( object ):
 
 	def searchValue( self, factsMap ):
 		if len(self.rules) > 0:
+			# for rule in self.rules:
 			print len(self.rules)
+		else:
+			return self.value
 

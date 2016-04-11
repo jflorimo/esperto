@@ -1,7 +1,7 @@
 # @Author: jflorimo
 # @Date:   2016-04-10 12:50:30
 # @Last Modified by:   jflorimo
-# @Last Modified time: 2016-04-10 18:45:14
+# @Last Modified time: 2016-04-11 20:15:27
 
 from __future__ import print_function
 from parsing import isVar
@@ -32,3 +32,5 @@ class Rule( object ):
 		for fact in self.facts:
 			print ( ":"+fact, end="" )
 		print ( "]}", end="\n" )
+
+	# def calculAnswer()
