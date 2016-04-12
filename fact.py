@@ -27,6 +27,41 @@ class Fact( object ):
 	def getRules( self ):
 		return ( self.rules )
 
+	# OPERATOR OVERLOADING
+	def op_add(self, b, facts):
+		tmp = Fact(self.name)
+		if (self.searchValue(varMap) == 1 and b.searchValue(varMap) == 1):
+			tmp.setValue(1)
+		elif ( self.searchValue(varMap) == 0 or b.searchValue(varMap) == 0 ):
+			tmp.setValue(0)
+		elif ( self.searchValue(varMap) == -1 or b.searchValue(varMap) == -1 ) :
+			tmp.setValue(-1)
+		else:
+			tmp.setValue(0)
+		return (tmp)
+
+	def op_xor(self, b, facts):
+		tmp = Fact(self.name)
+		if ( self.searchValue(varMap) == -1 or b.searchValue(varMap) == -1 ) :
+			tmp.setValue(-1)
+		elif (self.searchValue(varMap) ^ b.searchValue(varMap)):
+			tmp.setValue(1)
+		else:
+			tmp.setValue(0)
+		return (tmp)
+
+	def op_or(self, b, facts):
+		tmp = Fact(self.name)
+		if (self.searchValue(varMap) == 1 or b.searchValue(varMap) == 1):
+			tmp.setValue(1)
+		elif ( self.searchValue(varMap) == 0 or b.searchValue(varMap) == 0 ):
+			tmp.setValue(0)
+		elif ( self.searchValue(varMap) == -1 and b.searchValue(varMap) == -1 ) :
+			tmp.setValue(-1)
+		else:
+			tmp.setValue(0)
+		return (tmp)
+
 	#METHODS
 	def display( self ):
 		print "["+self.name+ ":" + str( self.value ) + "]"
@@ -35,8 +70,8 @@ class Fact( object ):
 
 	def searchValue( self, factsMap ):
 		if len(self.rules) > 0:
-			# for rule in self.rules:
-			print len(self.rules)
+			for rule in self.rules:
+				rule.calculAnswer( factsMap )
 		else:
 			return self.value
 
