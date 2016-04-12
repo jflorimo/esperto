@@ -1,7 +1,7 @@
 # @Author: jflorimo
 # @Date:   2016-04-10 12:50:30
 # @Last Modified by:   jflorimo
-# @Last Modified time: 2016-04-11 20:15:27
+# @Last Modified time: 2016-04-12 20:24:41
 
 from __future__ import print_function
 from parsing import isVar
@@ -13,6 +13,7 @@ class Rule( object ):
 		self.rule = ruleQuery;
 		self.answer = answer
 		self.facts = []
+		self.child = 0
 		for char in self.rule:
 			self.addFact(char)
 
@@ -43,8 +44,18 @@ class Rule( object ):
 
 	def calculAnswer( self, facts ):
 		resolver = self.handleParentheses()
-		for (key, value) in resolver.items():
-			print ( str(key) + ":" + str(value) )
+		tmpSubqueries = {}
+		self.child = 0;
+
+		print ( str(resolver) )
+		# for (key, subquery) in resolver.items():
+		# 	print ( str(key) + ":" + str(subquery) )
+		# self.calcul( resolver )
+
+	# def calcul( self, query, facts ):
+	# 	for x in str(key):
+	# 		print ( x )
+
 
 	# def calcul():
 
