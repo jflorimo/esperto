@@ -29,7 +29,11 @@ class Fact( object ):
 
 	# OPERATOR OVERLOADING
 	def op_add(self, b, facts):
-		tmp = Fact(self.name)
+		if b == 1 or b == 0:
+			tmp = Fact("-")
+			tmp.setValue(b)
+		else:	
+			tmp = Fact(self.name)
 		if (self.searchValue(facts) == 1 and b.searchValue(facts) == 1):
 			tmp.setValue(1)
 		elif ( self.searchValue(facts) == 0 or b.searchValue(facts) == 0 ):
@@ -41,7 +45,11 @@ class Fact( object ):
 		return (tmp)
 
 	def op_xor(self, b, facts):
-		tmp = Fact(self.name)
+		if b == 1 or b == 0:
+			tmp = Fact("-")
+			tmp.setValue(b)
+		else:	
+			tmp = Fact(self.name)
 		if ( self.searchValue(facts) == -1 or b.searchValue(facts) == -1 ) :
 			tmp.setValue(-1)
 		elif (self.searchValue(facts) ^ b.searchValue(facts)):
@@ -51,7 +59,11 @@ class Fact( object ):
 		return (tmp)
 
 	def op_or(self, b, facts):
-		tmp = Fact(self.name)
+		if b == 1 or b == 0:
+			tmp = Fact("-")
+			tmp.setValue(b)
+		else:	
+			tmp = Fact(self.name)
 		if (self.searchValue(facts) == 1 or b.searchValue(facts) == 1):
 			tmp.setValue(1)
 		elif ( self.searchValue(facts) == 0 or b.searchValue(facts) == 0 ):

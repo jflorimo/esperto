@@ -26,6 +26,15 @@ class Rule( object ):
 		return ( self.answer )
 
 	#METHODS
+	def handleFactForParentheses(self, fact):
+		tmp = None
+		if fact == 1 or fact == 0:
+			tmp = Fact("-")
+			tmp.setValue(b)
+			return tmp
+		else:	
+			tmp = fact
+		return tmp
 
 	def op_add(self, l, r, facts):
 		return (l.op_add(r, facts))
@@ -38,6 +47,8 @@ class Rule( object ):
 
 
 	def opn_add(self, l, r, facts):
+		l = self.handleFactForParentheses(l)
+		r = self.handleFactForParentheses(r)
 		result = Fact(l.getName)
 
 		if ( l.getValue() == 1 and r.getValue() == 0 ):
@@ -51,6 +62,8 @@ class Rule( object ):
 		return (result)
 
 	def opn_or(self, l, r, facts):
+		l = self.handleFactForParentheses(l)
+		r = self.handleFactForParentheses(r)
 		result = Fact(l.getName())
 		if ( l.getValue() == 1 or r.getValue() == 0 ):
 			result.setValue( 1 )
@@ -63,6 +76,8 @@ class Rule( object ):
 		return (result)
 
 	def opn_xor(self, l, r, facts):
+		l = self.handleFactForParentheses(l)
+		r = self.handleFactForParentheses(r)
 		result = Fact(l.getName())
 		if ( l.getValue() == -1 or r.getValue() == -1 ):
 			result.setValue( -1 )
@@ -90,17 +105,27 @@ class Rule( object ):
 
 
 	def calculAnswer( self, facts ):
+		tmpFacts = facts
 		resolver = self.handleParentheses()
 		tmpSubqueries = {}
 		self.child = 0;
+		elem = None
 
 		# print ( str(resolver) )
 		tmp = -1;
+		# print (str(resolver))
 		for ( key, subquery ) in resolver.items():
-			# print (str(resolver))
-			tmp = self.calcul( key, facts )
-			# print ("resolver result:" + str(tmp))
-		return tmp
+			# tmp = self.calcul( key, facts )
+			if (elem == None):
+				elem = key
+			for (i, query) in enumerate( subquery ):
+				tmpSubqueries[i] = self.calcul(query, facts)
+				self.child += 1
+
+		for (i, subquery) in enumerate( tmpSubqueries ):
+			# print ("fefe: " + str(subquery))
+			elem = str.replace(elem, "?", str(subquery), 1)
+		return self.calcul(elem, facts)
 
 	def calcul( self, query, facts ):
 		# print ("query:" + query)
@@ -124,7 +149,11 @@ class Rule( object ):
 			tmpFact = None
 			for (i, x) in enumerate( str( query )):
 				if x != "!" and self.isOperator( x ) == False and tmpFact is None:
-					tmpFact = facts[x]
+					if x == '0' or x == '1':
+						tmpFact = Fact("-")
+						tmpFact.setValue(x)
+					else:
+						tmpFact = facts[x]
 				# print ( "i:" + str(i) + " - " + x)
 				if (self.isOperator( x ) == True ):
 					op = x
@@ -143,27 +172,6 @@ class Rule( object ):
 						opposite = 1			
 			tmpFact = result
 		return result
-
-
-	# def calcul():
-
-
-	# def parseResolver(self, facts, resolver):
-	# 	tmp = {}
-	# 	tmpVarMap = facts
-	# 	elem = None
-	# 	self.child = 0
-
-	# 	for (key, value) in resolver.items():
-	# 		if (elem == None):
-	# 			elem = key
-	# 		for (i, query) in enumerate(value):
-	# 			tmp[str(self.child)] = self.calcul(query, facts)
-	# 			self.child += 1
-	# 	for ( i, fact ) in tmp.items():
-	# 		elem = str.replace(elem, "?", fact.getName(), 1)
-	# 		tmpVarMap[fact.getName()] = var
-	# 	return (self.calcul(elem, tmpVarMap))
 
 	def handleParentheses( self ):
 		resultold = self.rule
