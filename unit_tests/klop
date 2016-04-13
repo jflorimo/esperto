@@ -1,0 +1,9 @@
+#test1 AND simple test
+E + G => F
+F + C => D
+B + C + D => A 
+
+=BCEG
+
+?AF
+

@@ -48,7 +48,7 @@ if ( len( sys.argv ) < 2 ):
 read(sys.argv[1])
 init_factsValue(facts, input)
 init_factsRules(facts, rules)
-# debug()
+debug()
 
 for res in output:
 	print "#" + res + " -> " + str( facts[res].searchValue( facts ) )

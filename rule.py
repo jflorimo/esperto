@@ -5,6 +5,7 @@
 
 from __future__ import print_function
 from parsing import isVar
+from fact import Fact
 import re
 
 class Rule( object ):
@@ -25,6 +26,52 @@ class Rule( object ):
 		return ( self.answer )
 
 	#METHODS
+
+	def op_add(self, l, r, facts):
+		return (l.op_add(r, facts))
+
+	def op_or(self, l, r, facts):
+		return (l.op_or(r, facts))
+
+	def op_xor(self, l, r, facts):
+		return (l.op_xor(r, facts))
+
+
+	def opn_add(self, l, r, facts):
+		result = Fact(l.getName)
+
+		if ( l.getValue() == 1 and r.getValue() == 0 ):
+			result.setValue( 1 )
+		elif ( l.getValue() == 0 or r.getValue() == 1 ):
+			result.setValue( 0 )
+		elif ( l.getValue() == -1 or r.getValue() == -1 ):
+			result.setValue( -1 )
+		else:
+			result.setValue( 0 )
+		return (result)
+
+	def opn_or(self, l, r, facts):
+		result = Fact(l.getName())
+		if ( l.getValue() == 1 or r.getValue() == 0 ):
+			result.setValue( 1 )
+		elif ( l.getValue() == 0 or r.getValue() == 1 ):
+			result.setValue( 0 )
+		elif ( l.getValue() == -1 and r.getValue() == -1 ):
+			result.setValue( -1 )
+		else:
+			result.setValue( 0 )
+		return (result)
+
+	def opn_xor(self, l, r, facts):
+		result = Fact(l.getName())
+		if ( l.getValue() == -1 or r.getValue() == -1 ):
+			result.setValue( -1 )
+		elif ( l.getValue() == 1 ^ r.getValue() == 0 ):
+			result.setValue( 1 )
+		else:
+			result.setValue( 0 )
+		return (result)
+
 	def addFact( self, char ):
 		if isVar( char ):
 			self.facts.append( char )
@@ -47,14 +94,55 @@ class Rule( object ):
 		tmpSubqueries = {}
 		self.child = 0;
 
-		print ( str(resolver) )
-		# for (key, subquery) in resolver.items():
-		# 	print ( str(key) + ":" + str(subquery) )
-		# self.calcul( resolver )
+		# print ( str(resolver) )
+		tmp = -1;
+		for ( key, subquery ) in resolver.items():
+			# print (str(resolver))
+			tmp = self.calcul( key, facts )
+			# print ("resolver result:" + str(tmp))
+		return tmp
 
-	# def calcul( self, query, facts ):
-	# 	for x in str(key):
-	# 		print ( x )
+	def calcul( self, query, facts ):
+		# print ("query:" + query)
+		opposite = 0
+		result = -1
+		
+		ptr = {
+			"+": self.op_add,
+			"|": self.op_or,
+			"^": self.op_xor,
+			"!+": self.opn_add,
+			"!|": self.opn_or,
+			"!^": self.opn_xor
+		}
+		op = "+"
+		if len(query) == 1:
+			# print( "pok" )
+			result = facts[query].searchValue(facts)
+		else:
+			tmp = ""
+			tmpFact = None
+			for (i, x) in enumerate( str( query )):
+				if x != "!" and self.isOperator( x ) == False and tmpFact is None:
+					tmpFact = facts[x]
+				# print ( "i:" + str(i) + " - " + x)
+				if (self.isOperator( x ) == True ):
+					op = x
+				else :
+					if ( x != "!" ):
+						if ( opposite == 1 ):
+							op = "!" + op
+						if i > 0:
+							result = ptr[op](tmpFact, facts[x], facts).getValue()
+							# print ( str(tmpFact.getValue()) + " " + op + " " + str(facts[x].getValue()) + " = " + str(result))
+							tmpFact.setValue(result)
+
+						opposite = 0
+						tmp = x;
+					else :
+						opposite = 1			
+			tmpFact = result
+		return result
 
 
 	# def calcul():

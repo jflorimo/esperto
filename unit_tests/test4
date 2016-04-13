@@ -1,5 +1,11 @@
 #test4 NEGATION ! simple test
 B + !C => A 
 
-=C
+=B
 ?A 
+
+
+#With =, A should be false. 
+#With =B, A should be true. 
+#With =C, A should be false. 
+#With =BC, A should be false. 

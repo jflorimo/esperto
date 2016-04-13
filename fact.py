@@ -30,11 +30,11 @@ class Fact( object ):
 	# OPERATOR OVERLOADING
 	def op_add(self, b, facts):
 		tmp = Fact(self.name)
-		if (self.searchValue(varMap) == 1 and b.searchValue(varMap) == 1):
+		if (self.searchValue(facts) == 1 and b.searchValue(facts) == 1):
 			tmp.setValue(1)
-		elif ( self.searchValue(varMap) == 0 or b.searchValue(varMap) == 0 ):
+		elif ( self.searchValue(facts) == 0 or b.searchValue(facts) == 0 ):
 			tmp.setValue(0)
-		elif ( self.searchValue(varMap) == -1 or b.searchValue(varMap) == -1 ) :
+		elif ( self.searchValue(facts) == -1 or b.searchValue(facts) == -1 ) :
 			tmp.setValue(-1)
 		else:
 			tmp.setValue(0)
@@ -42,9 +42,9 @@ class Fact( object ):
 
 	def op_xor(self, b, facts):
 		tmp = Fact(self.name)
-		if ( self.searchValue(varMap) == -1 or b.searchValue(varMap) == -1 ) :
+		if ( self.searchValue(facts) == -1 or b.searchValue(facts) == -1 ) :
 			tmp.setValue(-1)
-		elif (self.searchValue(varMap) ^ b.searchValue(varMap)):
+		elif (self.searchValue(facts) ^ b.searchValue(facts)):
 			tmp.setValue(1)
 		else:
 			tmp.setValue(0)
@@ -52,11 +52,11 @@ class Fact( object ):
 
 	def op_or(self, b, facts):
 		tmp = Fact(self.name)
-		if (self.searchValue(varMap) == 1 or b.searchValue(varMap) == 1):
+		if (self.searchValue(facts) == 1 or b.searchValue(facts) == 1):
 			tmp.setValue(1)
-		elif ( self.searchValue(varMap) == 0 or b.searchValue(varMap) == 0 ):
+		elif ( self.searchValue(facts) == 0 or b.searchValue(facts) == 0 ):
 			tmp.setValue(0)
-		elif ( self.searchValue(varMap) == -1 and b.searchValue(varMap) == -1 ) :
+		elif ( self.searchValue(facts) == -1 and b.searchValue(facts) == -1 ) :
 			tmp.setValue(-1)
 		else:
 			tmp.setValue(0)
@@ -70,8 +70,12 @@ class Fact( object ):
 
 	def searchValue( self, factsMap ):
 		if len(self.rules) > 0:
-			for rule in self.rules:
-				rule.calculAnswer( factsMap )
+			# print "number of rules: " + str( len( self.rules ) ) 
+			tmp = -1
+			for ( i, rule ) in enumerate(self.rules):
+				tmp = rule.calculAnswer( factsMap )
+				# print "loop:" + str( i ) + " result: " + str( i )
+			return tmp
 		else:
 			return self.value
 
