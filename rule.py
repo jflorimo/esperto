@@ -97,98 +97,106 @@ class Rule( object ):
 			print ( ":"+fact, end="" )
 		print ( "]}", end="\n" )
 
-	def isOperator(self, string):
+	def isOperator( self, string ):
 		operator = ['+', '|', '&', '^']
 		if (string in operator):
 			return (True)
 		return (False)
 
+	def getPriority( self, char ):
+		# operators = ['!', '+', '|', '^'] real priority but iverted to correspond with indexes
+		operators = ['^', '|', '+', '!']
+		for ( i, op ) in enumerate( operators ):
+			if op == char:
+				return i
+		return None
 
 	def calculAnswer( self, facts ):
-		tmpFacts = facts
-		resolver = self.handleParentheses()
-		tmpSubqueries = {}
-		self.child = 0;
-		elem = None
+		print ("Priority:" +str( self.getPriority( '^' ) ))
+		# tmpFacts = facts
+		# resolver = self.handleParentheses()
+		# tmpSubqueries = {}
+		# self.child = 0;
+		# elem = None
 
-		# print ( str(resolver) )
-		tmp = -1;
-		# print (str(resolver))
-		for ( key, subquery ) in resolver.items():
-			# tmp = self.calcul( key, facts )
-			if (elem == None):
-				elem = key
-			for (i, query) in enumerate( subquery ):
-				tmpSubqueries[i] = self.calcul(query, facts)
-				self.child += 1
+		# # print ( str(resolver) )
+		# tmp = -1;
+		# # print (str(resolver))
+		# for ( key, subquery ) in resolver.items():
+		# 	# tmp = self.calcul( key, facts )
+		# 	if (elem == None):
+		# 		elem = key
+		# 	for (i, query) in enumerate( subquery ):
+		# 		tmpSubqueries[i] = self.calcul(query, facts)
+		# 		self.child += 1
 
-		for (i, subquery) in enumerate( tmpSubqueries ):
-			# print ("fefe: " + str(subquery))
-			elem = str.replace(elem, "?", str(subquery), 1)
-		return self.calcul(elem, facts)
+		# for (i, subquery) in enumerate( tmpSubqueries ):
+		# 	# print ("fefe: " + str(subquery))
+		# 	elem = str.replace(elem, "?", str(subquery), 1)
+		# return self.calcul(elem, facts)
 
-	def calcul( self, query, facts ):
-		# print ("query:" + query)
-		opposite = 0
-		result = -1
+	# def calcul( self, query, facts ):
+	# 	# print ("query:" + query)
+	# 	opposite = 0
+	# 	result = -1
 		
-		ptr = {
-			"+": self.op_add,
-			"|": self.op_or,
-			"^": self.op_xor,
-			"!+": self.opn_add,
-			"!|": self.opn_or,
-			"!^": self.opn_xor
-		}
-		op = "+"
-		if len(query) == 1:
-			# print( "pok" )
-			result = facts[query].searchValue(facts)
-		else:
-			tmp = ""
-			tmpFact = None
-			for (i, x) in enumerate( str( query )):
-				if x != "!" and self.isOperator( x ) == False and tmpFact is None:
-					if x == '0' or x == '1':
-						tmpFact = Fact("-")
-						tmpFact.setValue(x)
-					else:
-						tmpFact = facts[x]
-				# print ( "i:" + str(i) + " - " + x)
-				if (self.isOperator( x ) == True ):
-					op = x
-				else :
-					if ( x != "!" ):
-						if ( opposite == 1 ):
-							op = "!" + op
-						if i > 0:
-							result = ptr[op](tmpFact, facts[x], facts).getValue()
-							# print ( str(tmpFact.getValue()) + " " + op + " " + str(facts[x].getValue()) + " = " + str(result))
-							tmpFact.setValue(result)
+	# 	ptr = {
+	# 		"+": self.op_add,
+	# 		"|": self.op_or,
+	# 		"^": self.op_xor,
+	# 		"!+": self.opn_add,
+	# 		"!|": self.opn_or,
+	# 		"!^": self.opn_xor
+	# 	}
+	# 	op = "+"
+	# 	if len(query) == 1:
+	# 		# print( "pok" )
+	# 		result = facts[query].searchValue(facts)
+	# 	else:
+	# 		tmp = ""
+	# 		tmpFact = None
+	# 		for (i, x) in enumerate( str( query )):
+	# 			if x != "!" and self.isOperator( x ) == False and tmpFact is None:
+	# 				if x == '0' or x == '1':
+	# 					tmpFact = Fact("-")
+	# 					tmpFact.setValue(x)
+	# 				else:
+	# 					tmpFact = facts[x]
+	# 			# print ( "i:" + str(i) + " - " + x)
+	# 			if (self.isOperator( x ) == True ):
+	# 				op = x
+	# 			else :
+	# 				if ( x != "!" ):
+	# 					if ( opposite == 1 ):
+	# 						op = "!" + op
+	# 					if i > 0:
+	# 						result = ptr[op](tmpFact, facts[x], facts).getValue()
+	# 						# print ( str(tmpFact.getValue()) + " " + op + " " + str(facts[x].getValue()) + " = " + str(result))
+	# 						tmpFact.setValue(result)
 
-						opposite = 0
-						tmp = x;
-					else :
-						opposite = 1			
-			tmpFact = result
-		return result
+	# 					opposite = 0
+	# 					tmp = x;
+	# 				else :
+	# 					opposite = 1			
+	# 		tmpFact = result
+	# 	return result
 
-	def handleParentheses( self ):
-		resultold = self.rule
-		result = self.rule
-		i = 0
-		regexp = "(\((!?([A-Z]|\?)[+^|]){1,}!?([A-Z]|\?)\))"
+	# def handleParentheses( self ):
+	# 	resultold = self.rule
+	# 	result = self.rule
+	# 	i = 0
+	# 	regexp = "(\((!?([A-Z]|\?)[+^|]){1,}!?([A-Z]|\?)\))"
 
-		while ( result != re.sub(regexp, "?", result)):
-			result = re.sub(regexp, "?", result)
-		tmp_final = result
-		resolver = {result:[]}
-		result = resultold
+	# 	while ( result != re.sub(regexp, "?", result)):
+	# 		result = re.sub(regexp, "?", result)
+	# 	tmp_final = result
+	# 	resolver = {result:[]}
+	# 	result = resultold
 
-		while ( result != re.subn(regexp, "?", result, count=1)[0] ):
-			pos = re.search(regexp, result)
-			tmp = result[pos.start() + 1:pos.end() - 1]
-			result = re.subn(regexp, "?", result, count=1)[0]
-			resolver[tmp_final].append(tmp)
+	# 	while ( result != re.subn(regexp, "?", result, count=1)[0] ):
+	# 		pos = re.search(regexp, result)
+	# 		tmp = result[pos.start() + 1:pos.end() - 1]
+	# 		result = re.subn(regexp, "?", result, count=1)[0]
+	# 		resolver[tmp_final].append(tmp)
 
-		return resolver
+	# 	return resolver

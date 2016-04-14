@@ -27,52 +27,52 @@ class Fact( object ):
 	def getRules( self ):
 		return ( self.rules )
 
-	# OPERATOR OVERLOADING
-	def op_add(self, b, facts):
-		if b == 1 or b == 0:
-			tmp = Fact("-")
-			tmp.setValue(b)
-		else:	
-			tmp = Fact(self.name)
-		if (self.searchValue(facts) == 1 and b.searchValue(facts) == 1):
-			tmp.setValue(1)
-		elif ( self.searchValue(facts) == 0 or b.searchValue(facts) == 0 ):
-			tmp.setValue(0)
-		elif ( self.searchValue(facts) == -1 or b.searchValue(facts) == -1 ) :
-			tmp.setValue(-1)
-		else:
-			tmp.setValue(0)
-		return (tmp)
+	# # OPERATOR OVERLOADING
+	# def op_add(self, b, facts):
+	# 	if b == 1 or b == 0:
+	# 		tmp = Fact("-")
+	# 		tmp.setValue(b)
+	# 	else:	
+	# 		tmp = Fact(self.name)
+	# 	if (self.searchValue(facts) == 1 and b.searchValue(facts) == 1):
+	# 		tmp.setValue(1)
+	# 	elif ( self.searchValue(facts) == 0 or b.searchValue(facts) == 0 ):
+	# 		tmp.setValue(0)
+	# 	elif ( self.searchValue(facts) == -1 or b.searchValue(facts) == -1 ) :
+	# 		tmp.setValue(-1)
+	# 	else:
+	# 		tmp.setValue(0)
+	# 	return (tmp)
 
-	def op_xor(self, b, facts):
-		if b == 1 or b == 0:
-			tmp = Fact("-")
-			tmp.setValue(b)
-		else:	
-			tmp = Fact(self.name)
-		if ( self.searchValue(facts) == -1 or b.searchValue(facts) == -1 ) :
-			tmp.setValue(-1)
-		elif (self.searchValue(facts) ^ b.searchValue(facts)):
-			tmp.setValue(1)
-		else:
-			tmp.setValue(0)
-		return (tmp)
+	# def op_xor(self, b, facts):
+	# 	if b == 1 or b == 0:
+	# 		tmp = Fact("-")
+	# 		tmp.setValue(b)
+	# 	else:	
+	# 		tmp = Fact(self.name)
+	# 	if ( self.searchValue(facts) == -1 or b.searchValue(facts) == -1 ) :
+	# 		tmp.setValue(-1)
+	# 	elif (self.searchValue(facts) ^ b.searchValue(facts)):
+	# 		tmp.setValue(1)
+	# 	else:
+	# 		tmp.setValue(0)
+	# 	return (tmp)
 
-	def op_or(self, b, facts):
-		if b == 1 or b == 0:
-			tmp = Fact("-")
-			tmp.setValue(b)
-		else:	
-			tmp = Fact(self.name)
-		if (self.searchValue(facts) == 1 or b.searchValue(facts) == 1):
-			tmp.setValue(1)
-		elif ( self.searchValue(facts) == 0 or b.searchValue(facts) == 0 ):
-			tmp.setValue(0)
-		elif ( self.searchValue(facts) == -1 and b.searchValue(facts) == -1 ) :
-			tmp.setValue(-1)
-		else:
-			tmp.setValue(0)
-		return (tmp)
+	# def op_or(self, b, facts):
+	# 	if b == 1 or b == 0:
+	# 		tmp = Fact("-")
+	# 		tmp.setValue(b)
+	# 	else:	
+	# 		tmp = Fact(self.name)
+	# 	if (self.searchValue(facts) == 1 or b.searchValue(facts) == 1):
+	# 		tmp.setValue(1)
+	# 	elif ( self.searchValue(facts) == 0 or b.searchValue(facts) == 0 ):
+	# 		tmp.setValue(0)
+	# 	elif ( self.searchValue(facts) == -1 and b.searchValue(facts) == -1 ) :
+	# 		tmp.setValue(-1)
+	# 	else:
+	# 		tmp.setValue(0)
+	# 	return (tmp)
 
 	#METHODS
 	def display( self ):
@@ -81,13 +81,21 @@ class Fact( object ):
 		# 	rule.display()
 
 	def searchValue( self, factsMap ):
+
 		if len(self.rules) > 0:
-			# print "number of rules: " + str( len( self.rules ) ) 
 			tmp = -1
-			for ( i, rule ) in enumerate(self.rules):
+			for ( i, rule ) in enumerate( self.rules ):
 				tmp = rule.calculAnswer( factsMap )
-				# print "loop:" + str( i ) + " result: " + str( i )
+				print "loop:" + str( i ) + " result: " + str( i )
 			return tmp
 		else:
 			return self.value
+		# 	# print "number of rules: " + str( len( self.rules ) ) 
+		# 	tmp = -1
+		# 	for ( i, rule ) in enumerate(self.rules):
+		# 		tmp = rule.calculAnswer( factsMap )
+		# 		# print "loop:" + str( i ) + " result: " + str( i )
+		# 	return tmp
+		# else:
+		# 	return self.value
 
