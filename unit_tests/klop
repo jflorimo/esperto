@@ -1,9 +1,10 @@
 #test1 AND simple test
-E + G => F
-F + C => D
-B + C + D => A 
+E + G => K
+K => F
+#F + C => D
+#B + C + D => A 
 
-=BCEG
+=EG
 
-?AF
+?F
 

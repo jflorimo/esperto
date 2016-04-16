@@ -1,7 +1,7 @@
 # @Author: jflorimo
 # @Date:   2016-04-10 12:50:30
 # @Last Modified by:   jflorimo
-# @Last Modified time: 2016-04-12 20:24:41
+# @Last Modified time: 2016-04-16 16:58:10
 
 from __future__ import print_function
 from parsing import isVar
@@ -104,99 +104,105 @@ class Rule( object ):
 		return (False)
 
 	def getPriority( self, char ):
-		# operators = ['!', '+', '|', '^'] real priority but iverted to correspond with indexes
-		operators = ['^', '|', '+', '!']
+		operators = ['^', '|', '+'] # priority
 		for ( i, op ) in enumerate( operators ):
 			if op == char:
 				return i
 		return None
 
 	def calculAnswer( self, facts ):
-		print ("Priority:" +str( self.getPriority( '^' ) ))
-		# tmpFacts = facts
-		# resolver = self.handleParentheses()
-		# tmpSubqueries = {}
-		# self.child = 0;
-		# elem = None
+		# print (str(self.rule))
 
-		# # print ( str(resolver) )
-		# tmp = -1;
-		# # print (str(resolver))
-		# for ( key, subquery ) in resolver.items():
-		# 	# tmp = self.calcul( key, facts )
-		# 	if (elem == None):
-		# 		elem = key
-		# 	for (i, query) in enumerate( subquery ):
-		# 		tmpSubqueries[i] = self.calcul(query, facts)
-		# 		self.child += 1
+		stack = []
+		query = []
+		oposite = False
+		for x in self.rule:
+			if (x == '('):
+				stack.append(x)
+			elif (x == ')'):
+				while (stack[len(stack)-1] != '('):
+					query.append( stack.pop() )
+				stack.pop()
+			elif (x == '!'):
+				oposite = True
+			elif (oposite == True):
+				query.append("!"+x)
+				oposite = False
+			elif (self.isOperator(x) == True):
+				# print( "stack:"+ str(stack) + "x:"+x + str(len(stack)) )
+				if (len(stack) == 0):
+					stack.append(x)
+				else:
+					peek = stack[len(stack)-1]
+					if ( self.getPriority( x ) <=  self.getPriority( stack[ len( stack ) - 1 ] ) ):
+						query.append( stack.pop() )
+						stack.append(x)
+					else: 
+						stack.append(x)
+			else:
+				query.append(x)
+		# pop stack
+		while (len(stack) > 0):
+			query.append( stack.pop() )
 
-		# for (i, subquery) in enumerate( tmpSubqueries ):
-		# 	# print ("fefe: " + str(subquery))
-		# 	elem = str.replace(elem, "?", str(subquery), 1)
-		# return self.calcul(elem, facts)
-
-	# def calcul( self, query, facts ):
-	# 	# print ("query:" + query)
-	# 	opposite = 0
-	# 	result = -1
 		
-	# 	ptr = {
-	# 		"+": self.op_add,
-	# 		"|": self.op_or,
-	# 		"^": self.op_xor,
-	# 		"!+": self.opn_add,
-	# 		"!|": self.opn_or,
-	# 		"!^": self.opn_xor
-	# 	}
-	# 	op = "+"
-	# 	if len(query) == 1:
-	# 		# print( "pok" )
-	# 		result = facts[query].searchValue(facts)
-	# 	else:
-	# 		tmp = ""
-	# 		tmpFact = None
-	# 		for (i, x) in enumerate( str( query )):
-	# 			if x != "!" and self.isOperator( x ) == False and tmpFact is None:
-	# 				if x == '0' or x == '1':
-	# 					tmpFact = Fact("-")
-	# 					tmpFact.setValue(x)
-	# 				else:
-	# 					tmpFact = facts[x]
-	# 			# print ( "i:" + str(i) + " - " + x)
-	# 			if (self.isOperator( x ) == True ):
-	# 				op = x
-	# 			else :
-	# 				if ( x != "!" ):
-	# 					if ( opposite == 1 ):
-	# 						op = "!" + op
-	# 					if i > 0:
-	# 						result = ptr[op](tmpFact, facts[x], facts).getValue()
-	# 						# print ( str(tmpFact.getValue()) + " " + op + " " + str(facts[x].getValue()) + " = " + str(result))
-	# 						tmpFact.setValue(result)
+		return self.calcul(query, facts)
 
-	# 					opposite = 0
-	# 					tmp = x;
-	# 				else :
-	# 					opposite = 1			
-	# 		tmpFact = result
-	# 	return result
+	def getNextOperatorIndexInQuery(self, query):
+		for (i,x) in enumerate(query):
+			if (self.isOperator(x)):
+				return i
+		return -1;
 
-	# def handleParentheses( self ):
-	# 	resultold = self.rule
-	# 	result = self.rule
-	# 	i = 0
-	# 	regexp = "(\((!?([A-Z]|\?)[+^|]){1,}!?([A-Z]|\?)\))"
+	def calcul(self, query, facts):
+		ptr = {
+			"+": self.op_add,
+			"|": self.op_or,
+			"^": self.op_xor,
+			"!+": self.opn_add,
+			"!|": self.opn_or,
+			"!^": self.opn_xor
+		}
+		# print("Query:" + str( query ))
 
-	# 	while ( result != re.sub(regexp, "?", result)):
-	# 		result = re.sub(regexp, "?", result)
-	# 	tmp_final = result
-	# 	resolver = {result:[]}
-	# 	result = resultold
 
-	# 	while ( result != re.subn(regexp, "?", result, count=1)[0] ):
-	# 		pos = re.search(regexp, result)
-	# 		tmp = result[pos.start() + 1:pos.end() - 1]
-	# 		result = re.subn(regexp, "?", result, count=1)[0]
-	# 		resolver[tmp_final].append(tmp)
+		index = self.getNextOperatorIndexInQuery(query)
+		
+		while (index != -1):
+			# print()
+			# print ("index="+str(index))
+		 	l = query[index-2]
+		 	r = query[index-1]
+		 	op = query[index]
 
-	# 	return resolver
+		 	# print( l+" "+op+" "+r )
+
+		 	left = Fact(l) if (l == '0' or l == '1') else facts[l]
+		 	right = Fact(r) if (r == '0' or r == '1') else facts[r]
+
+
+		 	# print("Query1:" + str( query ) +"result="+query[index])
+
+		 	query[index] = str(ptr[op](left, right, facts).getValue())
+		 	# print("Query2:" + str( query ) +"result="+query[index])
+		 	# print("peek-2:"+query[index-2] + "peek1" + query[index-1] )
+		 	query.pop(index-2)
+		 	query.pop(index-1 -1)
+		 	index = self.getNextOperatorIndexInQuery(query)
+		 	# print("new query:" + str( query ) )
+
+		if (query[0] == '0'):
+			return 0
+		elif (query[0] == '1'):
+			return 1
+		return facts[query[0]].searchValue(facts)
+
+
+		# result
+
+
+
+
+
+
+	
