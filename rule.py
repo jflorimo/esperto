@@ -1,7 +1,7 @@
 # @Author: jflorimo
 # @Date:   2016-04-10 12:50:30
 # @Last Modified by:   jflorimo
-# @Last Modified time: 2016-04-16 16:58:10
+# @Last Modified time: 2016-04-16 18:10:04
 
 from __future__ import print_function
 from parsing import isVar
@@ -176,10 +176,33 @@ class Rule( object ):
 		 	op = query[index]
 
 		 	# print( l+" "+op+" "+r )
+		 	left = None
+		 	right = None
+		 	if (l[0] == '!'):
+		 		tmpFact = Fact(l[1])
+				if (l[1] != '0' and l[1] != '1'):
+					tmpFact.setValue( facts[l[1]].searchValue(facts))
+		 		if (tmpFact.getValue() == 0):
+		 			tmpFact.setValue(1)
+		 		else:
+		 			tmpFact.setValue(0)
+		 		left = tmpFact
+		 	else:
+			 	left = Fact(l) if (l == '0' or l == '1') else facts[l]
+			
+			if (r[0] == '!'):
+				tmpFact = Fact(r[1])
+				if (r[1] != '0' and r[1] != '1'):
+					tmpFact.setValue( facts[r[1]].searchValue(facts))
 
-		 	left = Fact(l) if (l == '0' or l == '1') else facts[l]
-		 	right = Fact(r) if (r == '0' or r == '1') else facts[r]
+		 		if (tmpFact.getValue() == 0):
+		 			tmpFact.setValue(1)
+		 		else:
+		 			tmpFact.setValue(0)
+		 		right = tmpFact
 
+			else:
+ 				right = Fact(r) if (r == '0' or r == '1') else facts[r]
 
 		 	# print("Query1:" + str( query ) +"result="+query[index])
 

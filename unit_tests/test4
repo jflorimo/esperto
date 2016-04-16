@@ -1,7 +1,7 @@
 #test4 NEGATION ! simple test
 B + !C => A 
 
-=CB
+=BC
 ?A 
 
 
