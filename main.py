@@ -3,6 +3,7 @@ import	sys
 from parsing import parseLine
 from parsing_utils import init_factsValue
 from parsing_utils import init_factsRules
+from parsing import isVar
 from graph import generateGraph
 
 facts = {}
@@ -42,13 +43,23 @@ def read( filePath ):
 
 	parse( result )
 
+def manualInputOutput(str):
+	tmp = list(raw_input(str).upper())
+	for x in tmp:
+		if isVar( x ) == False:
+			print( "[Error] non authorized char" )
+			exit( -2 )
+	return tmp
+
+
 if ( len( sys.argv ) < 2 ):
 	print ( "Usage : " + sys.argv[0] + " [Input file]" )
 	exit( -1 )
 
 deb = False
 graph = False
-
+manualIn = False
+manualOut = False
 
 
 for (i,arg) in enumerate(sys.argv):
@@ -56,12 +67,21 @@ for (i,arg) in enumerate(sys.argv):
 		deb = True
 	elif arg == '-g':
 		graph = True
+	elif arg == '-i':
+		manualIn = True
 	elif i != 0:
 		read(sys.argv[i])
-		init_factsValue(facts, input)
-		init_factsRules(facts, rules)
 
 
+# testuru = list(raw_input("kk:").upper())
+
+if manualIn == True:
+	input = manualInputOutput("input:")
+if manualIn == True:
+	output = manualInputOutput("output:")
+
+init_factsValue(facts, input)
+init_factsRules(facts, rules)
 
 if deb == True:
 	debug()
