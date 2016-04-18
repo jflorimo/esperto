@@ -46,12 +46,27 @@ if ( len( sys.argv ) < 2 ):
 	print ( "Usage : " + sys.argv[0] + " [Input file]" )
 	exit( -1 )
 
-read(sys.argv[1])
-init_factsValue(facts, input)
-init_factsRules(facts, rules)
-debug()
+deb = False
+graph = False
 
-generateGraph(facts, input, output)
+
+
+for (i,arg) in enumerate(sys.argv):
+	if arg == '-d':
+		deb = True
+	elif arg == '-g':
+		graph = True
+	elif i != 0:
+		read(sys.argv[i])
+		init_factsValue(facts, input)
+		init_factsRules(facts, rules)
+
+
+
+if deb == True:
+	debug()
+if graph == True:
+	generateGraph(facts, input, output)
 
 for res in output:
-	print "#" + res + " -> " + str( facts[res].searchValue( facts ) )
+	print "" + res + " -> " + str( facts[res].searchValue( facts ) )
