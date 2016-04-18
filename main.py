@@ -3,6 +3,7 @@ import	sys
 from parsing import parseLine
 from parsing_utils import init_factsValue
 from parsing_utils import init_factsRules
+from graph import generateGraph
 
 facts = {}
 rules = []
@@ -49,6 +50,8 @@ read(sys.argv[1])
 init_factsValue(facts, input)
 init_factsRules(facts, rules)
 debug()
+
+generateGraph(facts, input, output)
 
 for res in output:
 	print "#" + res + " -> " + str( facts[res].searchValue( facts ) )

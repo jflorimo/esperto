@@ -1,7 +1,7 @@
 # @Author: jflorimo
 # @Date:   2016-04-10 12:50:30
 # @Last Modified by:   jflorimo
-# @Last Modified time: 2016-04-16 18:10:04
+# @Last Modified time: 2016-04-18 15:12:58
 
 from __future__ import print_function
 from parsing import isVar
@@ -24,6 +24,8 @@ class Rule( object ):
 		return ( self.rule )
 	def getAnswer( self ):
 		return ( self.answer )
+	def getFacts( self ):
+		return ( self.facts )
 
 	#METHODS
 	def handleFactForParentheses(self, fact):
