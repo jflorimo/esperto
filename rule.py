@@ -165,7 +165,7 @@ class Rule( object ):
 			"!|": self.opn_or,
 			"!^": self.opn_xor
 		}
-		# print("Query:" + str( query ))
+		# print("Query:" + str( query ) )
 
 
 		index = self.getNextOperatorIndexInQuery(query)
@@ -173,11 +173,12 @@ class Rule( object ):
 		while (index != -1):
 			# print()
 			# print ("index="+str(index))
-		 	l = query[index-2]
-		 	r = query[index-1]
+
+		 	l = str(query[index-2])
+		 	r = str(query[index-1])
 		 	op = query[index]
 
-		 	# print( l+" "+op+" "+r )
+		 	# print("fef"+ l+" "+op+" "+r )
 		 	left = None
 		 	right = None
 		 	if (l[0] == '!'):
@@ -220,7 +221,15 @@ class Rule( object ):
 			return 0
 		elif (query[0] == '1'):
 			return 1
-		return facts[query[0]].searchValue(facts)
+		# print ("##"+query[0] + " str:" + str(query)[0] +" - " +str(len(query[0])))
+		if len(query[0]) > 1:
+			res = facts[query[0][1]].searchValue(facts);
+			if res == 1:
+				return 0
+			else:
+				return 1
+		else:
+			return facts[query[0]].searchValue(facts)
 
 
 		# result

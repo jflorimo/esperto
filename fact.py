@@ -89,8 +89,7 @@ class Fact( object ):
 		# 	rule.display()
 
 	def searchValue( self, factsMap ):
-
-		if len(self.rules) > 0 and self.isCalculated == False:
+		if len(self.rules) > 0 and self.isCalculated == False and self.value != 1:
 			tmp = -1
 			for ( i, rule ) in enumerate( self.rules ):
 
