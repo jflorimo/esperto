@@ -77,7 +77,7 @@ fi
 if [ "$1" == "-a" ] || [ "$2" == "-a" ] || [ "$1" == "-6" ] || [ "$2" == "-6" ]
 	then
 	echo "\033[0;1mTest 6:   ------------------------\033[0;0m"
-	printf "A + ( B + ( D + E ) ) => C\nA => B\n=A\n?C" > testfile.out
+	printf "A + ( B + D + E ) => C\nA => B\n=A\n?C" > testfile.out
 	echo "\033[31mC should be false\033[0m"
 	if [ "$1" == "-v" ] || [ "$2" == "-v" ]
 		then
@@ -103,7 +103,7 @@ fi
 if [ "$1" == "-a" ] || [ "$2" == "-a" ] || [ "$1" == "-8" ] || [ "$2" == "-8" ]
 	then
 	echo "\033[0;1mTest 8:   ------------------------\033[0;0m"
-	printf "!A ^ ( !B ^ D ) => C\nA => B\n=\n?C" > testfile.out
+	printf "!A ^ ( !B ^ D ) => C\nA => B\n\n?C" > testfile.out
 	echo "\033[31mC should be false\033[0m"
 	if [ "$1" == "-v" ] || [ "$2" == "-v" ]
 		then
@@ -116,7 +116,7 @@ fi
 if [ "$1" == "-a" ] || [ "$2" == "-a" ] || [ "$1" == "-9" ] || [ "$2" == "-9" ]
 	then
 	echo "\033[0;1mTest 9:   ------------------------\033[0;0m"
-	printf "!A ^ ( !B ^ ( D ^ !D ) ) => C\nA => B\n=A\n?C" > testfile.out
+	printf "!A ^ ( !B ^ D ^ !D ) => C\nA => B\n=A\n?C" > testfile.out
 	echo "\033[32mC should be true\033[0m"
 	if [ "$1" == "-v" ] || [ "$2" == "-v" ]
 		then
@@ -142,7 +142,7 @@ fi
 if [ "$1" == "-a" ] || [ "$2" == "-a" ] || [ "$1" == "-11" ] || [ "$2" == "-11" ]
 	then
 	echo "\033[0;1mTest 11:   -----------------------\033[0;0m"
-	printf "!A ^ ( !B ^ ( D + A ) ) => C\nA => B\n=A\n?C" > testfile.out
+	printf "!A ^ ( !B ^ D + A ) => C\nA => B\n=A\n?C" > testfile.out
 	echo "\033[31mC should be false\033[0m"
 	if [ "$1" == "-v" ] || [ "$2" == "-v" ]
 		then
@@ -155,7 +155,7 @@ fi
 if [ "$1" == "-a" ] || [ "$2" == "-a" ] || [ "$1" == "-12" ] || [ "$2" == "-12" ]
 	then
 	echo "\033[0;1mTest 12:   -----------------------\033[0;0m"
-	printf "A + ( B + ( D + ( E + F ) ) ) => C\nA => B\nB => D\nD => E\n=A\n?C" > testfile.out
+	printf "A + ( B + D + E + F ) => C\nA => B\nB => D\nD => E\n=A\n?C" > testfile.out
 	echo "\033[31mC should be false\033[0m"
 	if [ "$1" == "-v" ] || [ "$2" == "-v" ]
 		then
@@ -168,7 +168,7 @@ fi
 if [ "$1" == "-a" ] || [ "$2" == "-a" ] || [ "$1" == "-13" ] || [ "$2" == "-13" ]
 	then
 	echo "\033[0;1mTest 13:   -----------------------\033[0;0m"
-	printf "A + ( B + ( D + ( E + F ) ) ) => C\nA => B\nB => D\nD => E\nD => F\n=A\n?C" > testfile.out
+	printf "A + ( B + D + E + F ) => C\nA => B\nB => D\nD => E\nD => F\n=A\n?C" > testfile.out
 	echo "\033[32mC should be true\033[0m"
 	if [ "$1" == "-v" ] || [ "$2" == "-v" ]
 		then
@@ -233,8 +233,8 @@ fi
 if [ "$1" == "-a" ] || [ "$2" == "-a" ] || [ "$1" == "-18" ] || [ "$2" == "-18" ]
 	then
 	echo "\033[0;1mTest 18:   -----------------------\033[0;0m"
-	printf "( ( ( ( A ^ B ) + D ) | E ) ^ F ) => C\nB => !A + D\nA => B\n( A ^ ( !F + !E ) ) => F + E\nF + ( E + !A ) => !F\n=A\n?C" > testfile.out
-	echo "\033[31mC should be false\033[0m"
+	printf "( A ^ B ) + D ^ F => C\nB => !A + D\nA => B\nA => F + E\nF + ( E + !A ) => !F\n=A\n?C" > testfile.out
+	echo "\033[32mC should be true\033[0m"
 	if [ "$1" == "-v" ] || [ "$2" == "-v" ]
 		then
 			./expert_sys.py -v testfile.out
@@ -246,7 +246,7 @@ fi
 if [ "$1" == "-a" ] || [ "$2" == "-a" ] || [ "$1" == "-19" ] || [ "$2" == "-19" ]
 	then
 	echo "\033[0;1mTest 19:   -----------------------\033[0;0m"
-	printf "( ( ( ( A ^ B ) + D ) | E ) ^ F ) => C\nB => !A + D\nA => B\n( A ^ ( !F + !E ) ) => F + E\nF + ( E + !A ) => !F\n=A\n?C" > testfile.out
+	printf "( A ^ B + D ) => C\nB => !A + D\nA => B\nA => F + E\nE + !A => !F\n=A\n?C" > testfile.out
 	echo "\033[31mC should be false\033[0m"
 	if [ "$1" == "-v" ] || [ "$2" == "-v" ]
 		then
@@ -259,9 +259,9 @@ fi
 if [ "$1" == "-a" ] || [ "$2" == "-a" ] || [ "$1" == "-20" ] || [ "$2" == "-20" ]
 	then 
 	echo "\033[0;1mTest 20:   -----------------------\033[0;0m"
-	printf "( ( (A ^ B ) + D ) | E ) ^ F => C\nB => !A + D\nA => B\n( A ^ ( !F + !E ) ) => F + E\nF + ( E + !A ) => !F\n=\n?ABCDEF" > testfile.out
-	echo "\033[31mA,B,C,D sould be false\033[0m"
-	echo "\033[32mE,F should be true\033[0m"
+	printf "!A => B\nB => F + E\nF + ( E + !A ) => D\n\n?ABCDEF" > testfile.out
+	echo "\033[32mB,D,E,F should be true\033[0m"
+	echo "\033[31mA,C sould be false\033[0m"
 	if [ "$1" == "-v" ] || [ "$2" == "-v" ]
 		then
 			./expert_sys.py -v testfile.out
@@ -299,7 +299,7 @@ fi
 if [ "$1" == "-a" ] || [ "$2" == "-a" ] || [ "$1" == "-23" ] || [ "$2" == "-23" ]
 	then
 	echo "\033[0;1mTest 23:   -----------------------\033[0;0m"
-	printf "( ( ( ( A^B )+D )|E )^F )=>C\nB=>!A+D\nA=>B\n(A^(!F+!E))=>F+E\nF+(E+!A)=>!F\n=A\n?C" > testfile.out
+	printf "( A ^ B + D | E ) ^ F =>C\nB=>!A+D\nA=>B\n=A\n?C" > testfile.out
 	echo "\033[31mC should be false\033[0m"
 	if [ "$1" == "-v" ] || [ "$2" == "-v" ]
 		then
@@ -495,8 +495,6 @@ if [ "$1" == "-a" ] || [ "$2" == "-a" ] || [ "$1" == "-38" ] || [ "$2" == "-38" 
 	then
 	echo "\033[0;1mTest 38:  -----------------------\033[0;0m"
 	printf "A + B => C\n=A\n=B\n=AB\n?C"> testfile.out
-	echo "\033[31mC should be false\033[0m"
-	echo "\033[31mC should be false\033[0m"
 	echo "\033[32mC should be true\033[0m"
 	if [ "$1" == "-v" ] || [ "$2" == "-v" ]
 		then
@@ -511,8 +509,6 @@ if [ "$1" == "-a" ] || [ "$2" == "-a" ] || [ "$1" == "-39" ] || [ "$2" == "-39" 
 	echo "\033[0;1mTest 39:  -----------------------\033[0;0m"
 	printf "A + B => C\n A => B\n=A\n=B\n=AB\n?C"> testfile.out
 	echo "\033[32mC should be true\033[0m"
-	echo "\033[31mC should be false\033[0m"
-	echo "\033[32mC should be true\033[0m"
 	if [ "$1" == "-v" ] || [ "$2" == "-v" ]
 		then
 			./expert_sys.py -v testfile.out
@@ -524,9 +520,8 @@ fi
 if [ "$1" == "-a" ] || [ "$2" == "-a" ] || [ "$1" == "-40" ] || [ "$2" == "-40" ]
 	then
 	echo "\033[0;1mTest 40:   -----------------------\033[0;0m"
-	printf "A + B => C\n C => !C\n=A\n=B\n?ABC"> testfile.out
-	echo "\033[31mC should be false\033[0m\n"
-	echo "\033[31mAC should be false\033[0m\n\033[32mB should be true\033[0m"
+	printf "A + B => C\n=AB\n?ABC"> testfile.out
+	echo "\033[32mABC should be true\033[0m"
 	if [ "$1" == "-v" ] || [ "$2" == "-v" ]
 		then
 			./expert_sys.py -v testfile.out
