@@ -69,6 +69,8 @@ for (i,arg) in enumerate(sys.argv):
 		graph = True
 	elif arg == '-i':
 		manualIn = True
+	elif arg == '-o':
+		manualOut = True
 	elif i != 0:
 		read(sys.argv[i])
 
@@ -77,7 +79,7 @@ for (i,arg) in enumerate(sys.argv):
 
 if manualIn == True:
 	input = manualInputOutput("input:")
-if manualIn == True:
+if manualOut == True:
 	output = manualInputOutput("output:")
 
 init_factsValue(facts, input)
